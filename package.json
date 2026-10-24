@@ -1,0 +1,78 @@
+{
+  "name": "arrumaai",
+  "version": "0.1.0",
+  "description": "ArrumaAí - automação de documentos oficiais",
+  "main": "dist/main/main.js",
+  "private": true,
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.renderer.json",
+    "build:app": "tsc -p tsconfig.json && esbuild src/preload/preload.ts --bundle --platform=node --external:electron --outfile=dist/preload/preload.js && vite build",
+    "start": "npm run build:app && electron .",
+    "test:integration": "npm run build:app && electron dist/main/selftest.js",
+    "dist": "npm run build:app && electron-builder --win nsis --x64 --publish never",
+    "dist:dir": "npm run build:app && electron-builder --dir --publish never"
+  },
+  "dependencies": {
+    "docx": "9.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sql.js": "1.15.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/sql.js": "^1.4.11",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0",
+    "esbuild": "^0.28.2",
+    "jszip": "^3.10.2",
+    "typescript": "5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "5.0.5"
+  },
+  "author": "ArrumaAí",
+  "build": {
+    "appId": "br.com.arrumaai.app",
+    "productName": "ArrumaAí",
+    "copyright": "ArrumaAí",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ArrumaAí",
+      "artifactName": "ArrumaAi-Setup.exe",
+      "deleteAppDataOnUninstall": false,
+      "language": "1046",
+      "installerLanguages": [
+        "pt_BR"
+      ]
+    },
+    "linux": {
+      "target": "dir"
+    }
+  }
+}
